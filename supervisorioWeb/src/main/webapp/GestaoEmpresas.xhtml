@@ -14,13 +14,15 @@
 		<h1>Cadastro de Empresas</h1>
 
 		<h:form id="frm">
-
+			<p:messages id="msgs"/>
 			<p:toolbar>
 				<f:facet name="left">
 					<p:commandButton value="Nova" icon="ui-icon-document"
 						action="#{gestaoEmpresasBean.prepararNovoCadastro}"
 						process="@this" update="empresa-dialog"
-						oncomplete="PF('edicaoEmpresaDialog').show()" />
+						oncomplete="PF('edicaoEmpresaDialog').show()">
+						<p:resetInput target="empresa-dialog"/>
+						</p:commandButton>
 
 					<span class="ui-separator"> <span
 						class="ui-icon ui-icon-grip-dotted-vertical" />
@@ -38,7 +40,7 @@
 			<p:dataTable value="#{gestaoEmpresasBean.todasEmpresas}"
 				var="empresa" emptyMessage="Nenhuma empresa cadastrada." rows="10"
 				paginator="true" paginatorPosition="bottom" style="margin-top: 10px"
-				id="empresa-table">
+				id="empresas-table">
 
 				<p:column headerText="Razão social" sortBy="#{empresa.razaoSocial}">
 					<h:outputText value="#{empresa.razaoSocial}" />
@@ -54,6 +56,8 @@
 			<p:dialog header="Nova empresa" widgetVar="edicaoEmpresaDialog"
 				id="empresa-dialog" resizable="false" modal="true"
 				closeOnEscape="true">
+				<p:messages id="msg-dialog" autoUpdate="true"/>
+				<p:defaultCommand target="salvar-button" scope="empresa-dialog" />
 				<h:panelGrid columns="2" id="painel-dialog">
 					<p:outputLabel value="Nome fantasia" for="nome-fantasia" />
 					<p:inputText id="nome-fantasia" size="60" maxlength="80"
@@ -64,14 +68,13 @@
 						value="#{gestaoEmpresasBean.empresaEdicao.razaoSocial}" />
 
 					<p:outputLabel value="CNPJ" for="cnpj" />
-					<p:inputText id="cnpj" size="18" maxlength="18"
-						value="#{gestaoEmpresasBean.empresaEdicao.cnpj}" />
+					<p:inputMask id="cnpj" size="18" maxlength="18"
+						value="#{gestaoEmpresasBean.empresaEdicao.cnpj}" mask="99.999.999/9999-99" />
 
 					<p:outputLabel value="Data de fundação" for="data-fundacao" />
-					<p:inputText id="data-fundacao" size="10" maxlength="10"
-						value="#{gestaoEmpresasBean.empresaEdicao.dataFundacao}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</p:inputText>
+					
+					<p:calendar id="data-fundacao" size="10" mask="99/99/9999"
+						value="#{gestaoEmpresasBean.empresaEdicao.dataFundacao}" pattern="dd/MM/yyyy"/>
 
 					<p:outputLabel value="Tipo" for="tipo" />
 					<p:selectOneMenu id="tipo"
@@ -84,8 +87,8 @@
 					<p:outputLabel />
 					<p:commandButton value="Salvar" id="salvar-button"
 						action="#{gestaoEmpresasBean.salvar}" process="empresa-dialog"
-						update="empresa-table"
-						oncomplete="PF('edicaoEmpresaDialog').hide()" />
+						update="msg-dialog painel-dialog"
+						oncomplete="if (!args.validationFailed) PF('edicaoEmpresaDialog').hide()" />
 				</h:panelGrid>
 			</p:dialog>
 

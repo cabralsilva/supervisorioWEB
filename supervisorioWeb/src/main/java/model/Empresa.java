@@ -11,6 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.br.CNPJ;
 
 @Entity
 public class Empresa implements Serializable {
@@ -21,19 +26,26 @@ public class Empresa implements Serializable {
 	@GeneratedValue
 	private Long id;
 
+	@NotEmpty
 	@Column(name = "nome_fantasia", nullable = false, length = 80)
 	private String nomeFantasia;
 
+	@NotEmpty
 	@Column(name = "razao_social", nullable = false, length = 120)
 	private String razaoSocial;
 
+	@NotEmpty
+	@CNPJ
 	@Column(nullable = false, length = 18)
 	private String cnpj;
 
+	@NotNull
+	@Past
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_fundacao")
 	private Date dataFundacao;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private TipoEmpresa tipo;
 
