@@ -121,5 +121,11 @@ public class Empresa implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Empresa [id=" + id + ", nomeFantasia=" + nomeFantasia + ", razaoSocial=" + razaoSocial + ", cnpj="
+				+ cnpj + ", dataFundacao=" + dataFundacao + ", tipo=" + tipo + "]";
+	}
 	
 }

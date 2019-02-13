@@ -32,7 +32,11 @@ public class GestaoEmpresasBean implements Serializable {
 	private FacesMessages messages;
 	
 	private List<Empresa> todasEmpresas;
+	
 	private Empresa empresaEdicao = new Empresa();
+	
+	private Empresa empresaSelecionada;
+	
 	
 	public void prepararNovoCadastro() {
 		empresaEdicao = new Empresa();
@@ -50,7 +54,15 @@ public class GestaoEmpresasBean implements Serializable {
 	public void consultar() {
 		todasEmpresas = empresas.todas();
 	}
-
+	
+	public void excluir() {
+		cadastroEmpresa.excluir(empresaSelecionada);
+		empresaSelecionada = null;
+		
+		consultar();
+		
+		messages.info("Empresa excluída com sucesso!");
+	}
 	public List<Empresa> getTodasEmpresas() {
 		return todasEmpresas;
 	}
@@ -65,6 +77,15 @@ public class GestaoEmpresasBean implements Serializable {
 
 	public void setEmpresaEdicao(Empresa empresaEdicao) {
 		this.empresaEdicao = empresaEdicao;
+	}
+
+	public Empresa getEmpresaSelecionada() {
+		return empresaSelecionada;
+	}
+
+	public void setEmpresaSelecionada(Empresa empresaSelecionada) {
+		this.empresaSelecionada = empresaSelecionada;
+		System.out.println(this.empresaSelecionada);
 	}
 	
 }
